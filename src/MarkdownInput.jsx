@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Markdown from 'marked-react';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -28,6 +24,23 @@ export default function MarkdownInput() {
         localStorage.setItem('savedMarkdowns', JSON.stringify(newSavedItems));
         setMarkdown1('');
         setMarkdown2('');
+    };
+
+    const handleEdit = () => {
+        if (selectedCardIndex !== null) {
+            const selectedCard = savedItems[selectedCardIndex];
+            setMarkdown1(selectedCard.markdown1);
+            setMarkdown2(selectedCard.markdown2);
+        }
+    };
+
+    const handleDelete = () => {
+        if (selectedCardIndex !== null) {
+            const updatedSavedItems = savedItems.filter((item, index) => index !== selectedCardIndex);
+            setSavedItems(updatedSavedItems);
+            localStorage.setItem('savedMarkdowns', JSON.stringify(updatedSavedItems));
+            setSelectedCardIndex(null);
+        }
     };
 
     const handleCardClick = (index) => {
@@ -59,13 +72,19 @@ export default function MarkdownInput() {
             </div>
             <div>
                 {selectedCardIndex !== null ? (
-                    <Card style={{ width: '400px' }}>
+                    <Card style={{ width: '600px' }}>
                         <CardContent>
                             <div>
-                                <h2>{savedItems[selectedCardIndex].markdown1}</h2>
+                                <div>
+                                    <Markdown>{savedItems[selectedCardIndex].markdown1}</Markdown>
+                                </div>
                                 <div>
                                     <Markdown>{savedItems[selectedCardIndex].markdown2}</Markdown>
                                 </div>
+                            </div>
+                            <div>
+                                <Button onClick={handleEdit}>Éditer</Button>
+                                <Button onClick={handleDelete}>Supprimer</Button>
                             </div>
                         </CardContent>
                     </Card>
@@ -83,11 +102,11 @@ export default function MarkdownInput() {
                         <div>
                             <textarea value={markdown2} onChange={(event) => setMarkdown2(event.target.value)} />
                         </div>
+                        <div>
+                            <Button onClick={handleSave}>Sauvegarder</Button>
+                        </div>
                     </>
                 )}
-                <div>
-                    <Button onClick={handleSave}>Sauvegarder</Button>
-                </div>
             </div>
         </div>
     );
