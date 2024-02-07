@@ -18,25 +18,32 @@ const MarkdownInput = () => {
     const handleSave = () => {
         const newItem = { markdown1, markdown2 };
         const newSavedItems = [...savedItems, newItem];
-        setSavedItems(newSavedItems);
-        localStorage.setItem('savedMarkdowns', JSON.stringify(newSavedItems));
-        setMarkdown1('');
-        setMarkdown2('');
+        updateSavedItems(newSavedItems);
+        resetForm();
     };
 
-    const handleEdit = () => {
-        if (selectedCardIndex !== null) {
-            const selectedCard = savedItems[selectedCardIndex];
-            setMarkdown1(selectedCard.markdown1);
-            setMarkdown2(selectedCard.markdown2);
-        }
+    const updateSavedItems = (newSavedItems) => {
+        setSavedItems(newSavedItems);
+        localStorage.setItem('savedMarkdowns', JSON.stringify(newSavedItems));
+    };
+
+    const resetForm = () => {
+        setMarkdown1('Titre');
+        setMarkdown2('Note');
+    };
+
+    const handleCardEdit = (index) => {
+        setSelectedCardIndex(index);
+        const selectedCard = savedItems[index];
+        setMarkdown1(selectedCard.markdown1);
+        setMarkdown2(selectedCard.markdown2);
+        handleDelete();
     };
 
     const handleDelete = () => {
         if (selectedCardIndex !== null) {
             const updatedSavedItems = savedItems.filter((item, index) => index !== selectedCardIndex);
-            setSavedItems(updatedSavedItems);
-            localStorage.setItem('savedMarkdowns', JSON.stringify(updatedSavedItems));
+            updateSavedItems(updatedSavedItems);
             setSelectedCardIndex(null);
         }
     };
@@ -47,26 +54,29 @@ const MarkdownInput = () => {
 
     const handleNewNote = () => {
         setSelectedCardIndex(null);
-        setMarkdown1('Titre');
-        setMarkdown2('Note');
+        resetForm(); // Réinitialise les valeurs du titre et de la note
+    };
+
+    const renderSavedItems = () => {
+        return savedItems.map((item, index) => (
+            <Card key={index} style={{ marginBottom: '10px', width: '400px', cursor: 'pointer' }} onClick={() => handleCardClick(index)}>
+                <CardContent>
+                    <div>
+                        <Markdown>{item.markdown1}</Markdown>
+                        <div>
+                            <Markdown>{item.markdown2}</Markdown>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+        ));
     };
 
     return (
         <div style={{ display: 'flex' }}>
             <div style={{ marginRight: '50px' }}>
                 <Button onClick={handleNewNote} style={{ marginBottom: '10px' }}>Nouvelle Note</Button>
-                {savedItems.map((item, index) => (
-                    <Card key={index} style={{ marginBottom: '10px', width: '400px', cursor: 'pointer' }} onClick={() => handleCardClick(index)}>
-                        <CardContent>
-                            <div>
-                                <Markdown>{item.markdown1}</Markdown>
-                                <div>
-                                    <Markdown>{item.markdown2}</Markdown>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                ))}
+                {renderSavedItems()}
             </div>
             <div>
                 {selectedCardIndex !== null ? (
@@ -81,7 +91,7 @@ const MarkdownInput = () => {
                                 </div>
                             </div>
                             <div>
-                                <Button onClick={handleEdit}>Éditer</Button>
+                                <Button onClick={() => handleCardEdit(selectedCardIndex)}>Éditer</Button>
                                 <Button onClick={handleDelete}>Supprimer</Button>
                             </div>
                         </CardContent>
