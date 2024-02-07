@@ -1,9 +1,10 @@
-import MarkdownInput from './MarkdownInput';
+import React from 'react';
+import MarkdownInput from './components/MarkdownInput';
 
-export default function App() {
+const App = () => {
     return (
-        <>
         <MarkdownInput />
-        </>
     );
-}
+};
+
+export default App;

@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Markdown from 'marked-react';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import { Button, Card, CardContent } from '@mui/material';
 
-export default function MarkdownInput() {
+const MarkdownInput = () => {
     const [markdown1, setMarkdown1] = useState('Titre');
     const [markdown2, setMarkdown2] = useState('Note');
     const [savedItems, setSavedItems] = useState([]);
@@ -110,4 +108,6 @@ export default function MarkdownInput() {
             </div>
         </div>
     );
-}
+};
+
+export default MarkdownInput;
