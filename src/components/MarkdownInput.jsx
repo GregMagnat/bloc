@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Markdown from 'marked-react';
 import { Button, Card, CardContent } from '@mui/material';
 

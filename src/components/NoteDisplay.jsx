@@ -1,6 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types'; // Importez PropTypes
-
+/* eslint-disable react/prop-types */
 import Markdown from 'marked-react';
 import { Card, CardContent, Button } from '@mui/material';
 
@@ -23,14 +21,6 @@ const NoteDisplay = ({ markdown1, markdown2, handleEdit, handleDelete }) => {
             </CardContent>
         </Card>
     );
-};
-
-// Ajoutez les validations de props
-NoteDisplay.propTypes = {
-    markdown1: PropTypes.string.isRequired,
-    markdown2: PropTypes.string.isRequired,
-    handleEdit: PropTypes.func.isRequired,
-    handleDelete: PropTypes.func.isRequired
 };
 
 export default NoteDisplay;
